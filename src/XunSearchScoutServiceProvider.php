@@ -26,7 +26,8 @@ class XunSearchScoutServiceProvider extends ServiceProvider implements Deferrabl
                 array_merge($app['config']->get('scout.xunsearch.options'), [
                     'schema_prefix' => $app['config']->get(
                         'scout.xunsearch.options.schema_prefix',
-                        $app['config']->get('scout.prefix'))
+                        $app['config']->get('scout.prefix')
+                    )
                 ])
             );
         });

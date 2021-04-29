@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Units;
 
@@ -20,8 +20,10 @@ class TokenizerBuilderTest extends TestCase
             AfterBuildTokenizer::class,
         ]);
 
-        self::assertInstanceOf(NoneTokenizer::class,
-            (new TokenizerBuilder(NoneTokenizer::class))->build());
+        self::assertInstanceOf(
+            NoneTokenizer::class,
+            (new TokenizerBuilder(NoneTokenizer::class))->build()
+        );
 
         Event::assertDispatched(BeforeBuildTokenizer::class, 1);
         Event::assertDispatched(AfterBuildTokenizer::class, 1);
