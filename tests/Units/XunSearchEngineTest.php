@@ -19,6 +19,7 @@ class XunSearchEngineTest extends TestCase
 {
     protected function setUp(): void
     {
+        parent::setUp();
         Config::shouldReceive('get')->with('scout.after_commit', m::any())->andReturn(false);
     }
 
