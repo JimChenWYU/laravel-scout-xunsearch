@@ -109,7 +109,6 @@ class XunSearchClient
         $topWordsCollection = $this->tokenizerBuilder
             ->withXs($this->initXunSearch($indexName))
             ->build()
-            ->throughMiddleware($this->options['tokenizer']['middlewares'] ?? [])
             ->getTops($string, 5, 'n,nr,ns,nz,v,vn');
 
         $topWords = [];

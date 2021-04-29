@@ -24,10 +24,9 @@ class XunSearchScoutServiceProvider extends ServiceProvider implements Deferrabl
                 forward_static_call([$app['config']->get('scout.xunsearch.tokenizer.class'), 'builder']),
                 $app['config']->get('scout.xunsearch.charset'),
                 array_merge($app['config']->get('scout.xunsearch.options'), [
-                    'schema_prefix' => $app['config']->get('scout.xunsearch.options.schema_prefix', $app['config']->get('scout.prefix')),
-                    'tokenizer' => [
-                        'middlewares' => $app['config']->get('scout.xunsearch.tokenizer.middlewares', []),
-                    ],
+                    'schema_prefix' => $app['config']->get(
+                        'scout.xunsearch.options.schema_prefix',
+                        $app['config']->get('scout.prefix'))
                 ])
             );
         });

@@ -3,7 +3,6 @@
 namespace JimChen\LaravelScout\XunSearch\Tokenizers\Contracts;
 
 use JimChen\LaravelScout\XunSearch\Builders\TokenizerBuilder;
-use JimChen\LaravelScout\XunSearch\Pipeline;
 use JimChen\LaravelScout\XunSearch\Tokenizers\Results\Top;
 use SplFixedArray;
 
@@ -30,20 +29,6 @@ abstract class AbstractTokenizer implements TokenizerContract
     public static function builder()
     {
         return new TokenizerBuilder(static::class);
-    }
-
-    /**
-     * @param array $middlewares
-     * @return self
-     */
-    public function throughMiddleware(array $middlewares = [])
-    {
-        return (new Pipeline())
-            ->send($this)
-            ->through($middlewares)
-            ->then(function (TokenizerContract $tokenizer) {
-                return $tokenizer;
-            });
     }
 
     public function getTops($text, $limit = 10, $xattr = ''): SplFixedArray

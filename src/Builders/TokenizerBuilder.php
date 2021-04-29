@@ -2,6 +2,8 @@
 
 namespace JimChen\LaravelScout\XunSearch\Builders;
 
+use JimChen\LaravelScout\XunSearch\Events\AfterBuildTokenizer;
+use JimChen\LaravelScout\XunSearch\Events\BeforeBuildTokenizer;
 use JimChen\LaravelScout\XunSearch\Tokenizers\Contracts\AbstractTokenizer;
 use JimChen\LaravelScout\XunSearch\Tokenizers\Contracts\TokenizerContract;
 use ReflectionClass;
@@ -57,6 +59,9 @@ class TokenizerBuilder
      */
     public function build()
     {
-        return (new ReflectionClass($this->class))->newInstance($this);
+        event(new BeforeBuildTokenizer($this));
+        return tap((new ReflectionClass($this->class))->newInstance($this), function ($tokenizer) {
+            event(new AfterBuildTokenizer($this, $tokenizer));
+        });
     }
 }

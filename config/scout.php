@@ -9,10 +9,6 @@ return [
 
         'tokenizer' => [
             'class' => \JimChen\LaravelScout\XunSearch\Tokenizers\ScwsTokenizer::class,
-
-            /*'middlewares' => [
-
-            ],*/
         ],
 
         'charset' => 'utf-8',
