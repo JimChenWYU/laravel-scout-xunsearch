@@ -3,6 +3,7 @@
 namespace JimChen\LaravelScout\XunSearch;
 
 use donatj\Ini\Builder as IniBuilder;
+use Illuminate\Support\Str;
 use JimChen\LaravelScout\XunSearch\Builders\TokenizerBuilder;
 use JimChen\LaravelScout\XunSearch\Tokenizers\Results\Top;
 use XS;
@@ -54,7 +55,7 @@ class XunSearchClient
      * @param string $charset
      * @param array  $options
      */
-    public function __construct($indexHost, $searchHost, TokenizerBuilder $tokenizerBuilder, $charset = 'uft8', $options = [])
+    public function __construct($indexHost, $searchHost, TokenizerBuilder $tokenizerBuilder, $charset = 'uft-8', $options = [])
     {
         $this->indexHost = $indexHost;
         $this->searchHost = $searchHost;
@@ -139,13 +140,13 @@ class XunSearchClient
     public function loadConfig(string $schema)
     {
         $config = [];
-        foreach ($this->options['schemas'][$name = $this->getSchemaName($schema)] as $field => $value) {
+        foreach ($this->options['schemas'][$this->getSchemaName($schema)] as $field => $value) {
             $config[$field] = $value;
         }
         $config['server.search'] = $this->searchHost;
         $config['server.index'] = $this->indexHost;
         $config['project.default_charset'] = $this->charset;
-        $config['project.name'] = $name;
+        $config['project.name'] = $schema;
 
         return $config;
     }
@@ -156,6 +157,10 @@ class XunSearchClient
      */
     protected function getSchemaName(string $name)
     {
+        if (isset($this->options['schema_prefix']) && $this->options['schema_prefix']) {
+            return Str::after($name, $this->options['schema_prefix']);
+        }
+
         return $name;
     }
 }
