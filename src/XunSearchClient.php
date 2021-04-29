@@ -4,6 +4,7 @@ namespace JimChen\LaravelScout\XunSearch;
 
 use donatj\Ini\Builder as IniBuilder;
 use Illuminate\Support\Str;
+use JimChen\LaravelScout\XunSearch\Queries\Query;
 use XS;
 
 class XunSearchClient
@@ -100,11 +101,24 @@ class XunSearchClient
     }
 
     /**
-     * @param mixed $query
+     * @param callable|string|Query $query
+     * @return string
      */
-    public function buildQuery($query): string
+    public function buildQuery($query)
     {
-        //TODO:
+        if (is_string($query)) {
+            return $query;
+        }
+
+        if ($query instanceof Query) {
+            return $query->__toString();
+        }
+
+        if (is_callable($query)) {
+            return (string)call_user_func($query);
+        }
+
+        return (string)$query();
     }
 
     /**
