@@ -7,6 +7,7 @@ use JimChen\LaravelScout\XunSearch\Builders\TokenizerBuilder;
 use JimChen\LaravelScout\XunSearch\Events\AfterBuildTokenizer;
 use JimChen\LaravelScout\XunSearch\Events\BeforeBuildTokenizer;
 use JimChen\LaravelScout\XunSearch\Tokenizers\Contracts\AbstractTokenizer;
+use JimChen\LaravelScout\XunSearch\Tokenizers\Contracts\TokenizerContract;
 use SplFixedArray;
 use Tests\TestCase;
 use XSDocument;
@@ -41,6 +42,18 @@ class TokenizerBuilderTest extends TestCase
             return true;
         });
     }
+
+    public function test_throw_exception()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage("Class '" . NotTokenizer::class . "' not implement '" . TokenizerContract::class . "'");
+        (new TokenizerBuilder(NotTokenizer::class))->build();
+    }
+}
+
+class NotTokenizer
+{
+
 }
 
 class NoneTokenizer extends AbstractTokenizer
