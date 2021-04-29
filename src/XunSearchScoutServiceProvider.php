@@ -4,7 +4,6 @@ namespace JimChen\LaravelScout\XunSearch;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use JimChen\LaravelScout\XunSearch\Builders\TokenizerBuilder;
 use JimChen\LaravelScout\XunSearch\Engines\XunSearchEngine;
 use Laravel\Scout\EngineManager;
 
