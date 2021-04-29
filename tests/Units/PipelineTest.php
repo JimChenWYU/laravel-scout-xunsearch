@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Units;
 
@@ -17,7 +17,7 @@ class TokenizerPipelineTest extends TestCase
             return $next($piped);
         };
 
-        $result = (new Pipeline)
+        $result = (new Pipeline())
             ->send('foo')
             ->through([ PipelineTestPipeOne::class, $pipeTwo ])
             ->then(function ($piped) {
@@ -35,9 +35,9 @@ class TokenizerPipelineTest extends TestCase
     {
         unset($_SERVER['__test.pipe.one']);
 
-        $result = (new Pipeline)
+        $result = (new Pipeline())
             ->send('foo')
-            ->through([new PipelineTestPipeOne])
+            ->through([new PipelineTestPipeOne()])
             ->then(function ($piped) {
                 return $piped;
             });
@@ -52,9 +52,9 @@ class TokenizerPipelineTest extends TestCase
     {
         unset($_SERVER['__test.pipe.one']);
 
-        $result = (new Pipeline)
+        $result = (new Pipeline())
             ->send('foo')
-            ->through([new PipelineTestPipeTwo])
+            ->through([new PipelineTestPipeTwo()])
             ->then(
                 function ($piped) {
                     return $piped;
@@ -77,7 +77,7 @@ class TokenizerPipelineTest extends TestCase
             return $next($piped);
         };
 
-        $result = (new Pipeline)
+        $result = (new Pipeline())
             ->send('foo')
             ->through([$function])
             ->then(
@@ -91,7 +91,7 @@ class TokenizerPipelineTest extends TestCase
 
         unset($_SERVER['__test.pipe.one']);
 
-        $result = (new Pipeline)
+        $result = (new Pipeline())
             ->send('bar')
             ->through($function)
             ->then(function ($piped) {
@@ -108,7 +108,7 @@ class TokenizerPipelineTest extends TestCase
     {
         unset($_SERVER['__test.pipe.one']);
 
-        $result = (new Pipeline)
+        $result = (new Pipeline())
             ->send('foo')
             ->through([PipelineTestPipeTwo::class])
             ->then(
@@ -130,9 +130,9 @@ class TokenizerPipelineTest extends TestCase
 
         $parameters = ['one', 'two'];
 
-        $result = (new Pipeline)
+        $result = (new Pipeline())
             ->send('foo')
-            ->through(PipelineTestParameterPipe::class.':'.implode(',', $parameters))
+            ->through(PipelineTestParameterPipe::class . ':' . implode(',', $parameters))
             ->then(function ($piped) {
                 return $piped;
             });

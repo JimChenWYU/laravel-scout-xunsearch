@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Units;
 
@@ -18,7 +18,9 @@ class XunSearchClientTest extends TestCase
         $builder->shouldReceive('build')->withAnyArgs()->andReturnSelf();
         $builder->shouldReceive('throughMiddleware')->withAnyArgs()->andReturnSelf();
         $builder->shouldReceive('getTops')->with(
-            'foobar', 5, 'n,nr,ns,nz,v,vn'
+            'foobar',
+            5,
+            'n,nr,ns,nz,v,vn'
         )->andReturn(SplFixedArray::fromArray([
             new Top(1, '', 'foo'),
             new Top(1, '', 'bar'),

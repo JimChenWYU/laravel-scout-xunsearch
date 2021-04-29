@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Units;
 
@@ -39,7 +39,7 @@ class XunSearchEngineTest extends TestCase
         ]);
 
         $engine = new XunSearchEngine($client);
-        $engine->update(Collection::make([new SearchableModel]));
+        $engine->update(Collection::make([new SearchableModel()]));
 
         self::assertTrue(true);
     }
@@ -69,7 +69,7 @@ class XunSearchEngineTest extends TestCase
         $search->shouldReceive('addRange')->with('foo', 1, 1)->andReturnSelf();
 
         $engine = new XunSearchEngine($client);
-        $builder = new Builder(new SearchableModel, 'zonda');
+        $builder = new Builder(new SearchableModel(), 'zonda');
         $builder->where('foo', 1);
         self::assertEquals([
             'hits' => [1, 2, 3],
@@ -141,7 +141,7 @@ class XunSearchEngineTest extends TestCase
         $index->shouldNotReceive('update');
 
         $engine = new XunSearchEngine($client);
-        $engine->update(Collection::make([new EmptySearchableModel]));
+        $engine->update(Collection::make([new EmptySearchableModel()]));
 
         self::assertTrue(true);
     }
@@ -154,7 +154,7 @@ class XunSearchEngineTest extends TestCase
         $index->shouldNotReceive('update');
 
         $engine = new XunSearchEngine($client, true);
-        $engine->update(Collection::make([new SoftDeletedEmptySearchableModel]));
+        $engine->update(Collection::make([new SoftDeletedEmptySearchableModel()]));
 
         self::assertTrue(true);
     }
