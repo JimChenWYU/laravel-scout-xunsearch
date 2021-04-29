@@ -99,16 +99,16 @@ class XunSearchClient
      * @param string $string
      * @return string[]
      */
-    public function participle(XS $xs, string $string)
+    public function participle(string $indexName, string $string)
     {
         if (empty($string)) {
             return [];
         }
 
         $topWordsCollection = $this->tokenizerBuilder
-            ->withXs($xs)
+            ->withXs($this->initXunSearch($indexName))
             ->build()
-            ->pipelines($this->options['tokenizer']['middlewares'] ?? [])
+            ->throughMiddleware($this->options['tokenizer']['middlewares'] ?? [])
             ->getTops($string, 5, 'n,nr,ns,nz,v,vn');
 
         $topWords = [];

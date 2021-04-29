@@ -3,7 +3,7 @@
 namespace JimChen\LaravelScout\XunSearch\Tokenizers\Contracts;
 
 use JimChen\LaravelScout\XunSearch\Builders\TokenizerBuilder;
-use JimChen\LaravelScout\XunSearch\TokenizerPipeline;
+use JimChen\LaravelScout\XunSearch\Pipeline;
 use JimChen\LaravelScout\XunSearch\Tokenizers\Results\Top;
 use SplFixedArray;
 
@@ -34,9 +34,9 @@ abstract class AbstractTokenizer implements TokenizerContract
      * @param array $middlewares
      * @return self
      */
-    public function pipelines(array $middlewares = [])
+    public function throughMiddleware(array $middlewares = [])
     {
-        return (new TokenizerPipeline())
+        return (new Pipeline())
             ->send($this)
             ->through($middlewares)
             ->then(function (TokenizerContract $tokenizer) {

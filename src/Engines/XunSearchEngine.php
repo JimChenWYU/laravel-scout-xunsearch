@@ -206,7 +206,7 @@ class XunSearchEngine extends Engine
             return call_user_func($builder->callback, $search, $builder->query, $options);
         }
 
-        $words = $this->xunsearch->participle($this->xunsearch->initXunSearch($indexName), $builder->query);
+        $words = $this->xunsearch->participle($indexName, $builder->query);
 
         $search->setQuery($this->buildSearchQuery($words, $or));
 

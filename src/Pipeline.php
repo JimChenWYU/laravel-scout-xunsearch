@@ -3,10 +3,9 @@
 namespace JimChen\LaravelScout\XunSearch;
 
 use Closure;
-use JimChen\LaravelScout\XunSearch\Tokenizers\Contracts\MiddlewareContract;
 use Throwable;
 
-class TokenizerPipeline
+class Pipeline
 {
     /**
      * The object being passed through the pipeline.
@@ -18,9 +17,16 @@ class TokenizerPipeline
     /**
      * The array of class pipes.
      *
-     * @var string[]|callable[]
+     * @var array
      */
     protected $pipes = [];
+
+    /**
+     * The method to call on each pipe.
+     *
+     * @var string
+     */
+    protected $method = 'handle';
 
     /**
      * Set the object being sent through the pipeline.
@@ -38,7 +44,7 @@ class TokenizerPipeline
     /**
      * Set the array of pipes.
      *
-     * @param  string[]|callable[] $pipes
+     * @param  string[]|callable[]|object[]|string|object|Closure $pipes
      * @return $this
      */
     public function through($pipes)
@@ -62,7 +68,7 @@ class TokenizerPipeline
     /**
      * Get the array of configured pipes.
      *
-     * @return string[]|callable[]
+     * @return array
      */
     protected function pipes()
     {
@@ -96,18 +102,22 @@ class TokenizerPipeline
         return function ($stack, $pipe) {
             return function ($passable) use ($stack, $pipe) {
                 try {
-                    if (is_object($pipe) && $pipe instanceof MiddlewareContract) {
-                        return $pipe->handle($passable, $stack);
+                    if (is_callable($passable)) {
+                        return $pipe($passable, $stack);
+                    }
+                    if (! is_object($pipe)) {
+                        [$className, $parameters] = $this->parsePipeString($pipe);
+
+                        $pipe = new $className();
+
+                        $parameters = array_merge([$passable, $stack], $parameters);
+                    } else {
+                        $parameters = [$passable, $stack];
                     }
 
-                    if (is_string($pipe) && is_subclass_of($pipe, MiddlewareContract::class)) {
-                        [$name, $parameters] = $this->parsePipeString($pipe);
-                        /** @var MiddlewareContract $pipe */
-                        $pipe = new $name(...$parameters);
-                        return $pipe->handle($passable, $stack);
-                    }
-
-                    return $pipe($passable, $stack);
+                    return method_exists($pipe, $this->method)
+                        ? call_user_func_array([$pipe, $this->method], $parameters)
+                        : $pipe(...$parameters);
                 } catch (Throwable $e) {
                     return $this->handleException($passable, $e);
                 }
