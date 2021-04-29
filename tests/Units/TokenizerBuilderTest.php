@@ -53,7 +53,6 @@ class TokenizerBuilderTest extends TestCase
 
 class NotTokenizer
 {
-
 }
 
 class NoneTokenizer extends AbstractTokenizer
