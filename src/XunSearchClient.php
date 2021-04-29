@@ -157,8 +157,9 @@ class XunSearchClient
      */
     protected function getSchemaName(string $name)
     {
-        if (isset($this->options['schema_prefix']) && $this->options['schema_prefix']) {
-            return Str::after($name, $this->options['schema_prefix']);
+        $prefix = $this->options['schema_prefix'] ?? '';
+        if ($prefix) {
+            return Str::after($name, $prefix);
         }
 
         return $name;

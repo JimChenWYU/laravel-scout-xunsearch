@@ -15,9 +15,12 @@ return [
             ],*/
         ],
 
-        'charset' => 'utf8',
+        'charset' => 'utf-8',
 
         'options' => [
+
+            'schema_prefix' => env('SCOUT_PREFIX'),
+
             'schemas' => [
                 /**
                  * @see http://www.xunsearch.com/doc/php/guide/ini.guide
