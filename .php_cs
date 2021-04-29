@@ -2,8 +2,9 @@
 return PhpCsFixer\Config::create()
     ->setRules([
         '@PSR2' => true,
+        'declare_strict_types' => true,
         'array_syntax' => ['syntax' => 'short'],
-        'blank_line_after_opening_tag' => true,
+        // 'blank_line_after_opening_tag' => true,
         'braces' => ['allow_single_line_closure' => true],
         'compact_nullable_typehint' => true,
         'concat_space' => ['spacing' => 'one'],
