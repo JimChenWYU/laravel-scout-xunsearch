@@ -18,6 +18,8 @@ use const XS_CMD_SEARCH_SCWS_SET;
 
 class ScwsTokenizer extends AbstractTokenizer
 {
+    public const MULTI_MASK = 15;
+
     protected $server;
 
     protected $charset;
@@ -32,6 +34,24 @@ class ScwsTokenizer extends AbstractTokenizer
         parent::init();
         $this->server = $this->xs->getScwsServer();
         $this->charset = $this->xs->getDefaultCharset();
+
+        $this->server->setTimeout(0);
+        // constants
+        if (!defined('SCWS_MULTI_NONE')) {
+            define('SCWS_MULTI_NONE', 0);
+            define('SCWS_MULTI_SHORT', 1);
+            define('SCWS_MULTI_DUALITY', 2);
+            define('SCWS_MULTI_ZMAIN', 4);
+            define('SCWS_MULTI_ZALL', 8);
+        }
+        if (!defined('SCWS_XDICT_XDB')) {
+            define('SCWS_XDICT_XDB', 1);
+            define('SCWS_XDICT_MEM', 2);
+            define('SCWS_XDICT_TXT', 4);
+        }
+        if ($this->mode !== null && $this->mode !== '') {
+            $this->setMulti($this->mode);
+        }
     }
 
     /**
@@ -109,6 +129,20 @@ class ScwsTokenizer extends AbstractTokenizer
     }
 
     /**
+     * 设置复合分词选项
+     * @param int $mode 复合选项, 值范围 0~15
+     *  默认为值为 3, 可使用常量组合:
+     *  SCWS_MULTI_SHORT|SCWS_MULTI_DUALITY|SCWS_MULTI_ZMAIN|SCWS_MULTI_ZALL
+     * @return static 返回对象本身以支持串接操作
+     */
+    public function setMulti($mode = 3)
+    {
+        $mode = (int)$mode & self::MULTI_MASK;
+        $this->setting['multi'] = new XSCommand(XS_CMD_SEARCH_SCWS_SET, XS_CMD_SCWS_SET_MULTI, $mode);
+        return $this;
+    }
+
+    /**
      * @param string $text
      * @return string
      * @throws \XSException
@@ -116,13 +150,15 @@ class ScwsTokenizer extends AbstractTokenizer
     public function applySetting($text)
     {
         $this->xs->getScwsServer()->reopen();
-        foreach ($this->setting as $key => $cmd) {
-            if (is_array($cmd)) {
-                foreach ($cmd as $_cmd) {
-                    $this->server->execCommand($_cmd);
+        if ($this->setting) {
+            foreach ($this->setting as $key => $cmd) {
+                if (is_array($cmd)) {
+                    foreach ($cmd as $_cmd) {
+                        $this->server->execCommand($_cmd);
+                    }
+                } else {
+                    $this->server->execCommand($cmd);
                 }
-            } else {
-                $this->server->execCommand($cmd);
             }
         }
         return XS::convert($text, 'UTF-8', $this->charset);

@@ -210,7 +210,7 @@ class XunSearchEngine extends Engine
 
         $search->setQuery($this->buildSearchQuery($words, $or));
 
-        collect($builder->wheres)->map(function ($value, $key) use ($search) {
+        collect($builder->wheres)->each(function ($value, $key) use ($search) {
             if ($value instanceof RangeOperator) {
                 $search->addRange($key, $value->getFrom(), $value->getTo());
             } elseif ($value instanceof WeightOperator) {

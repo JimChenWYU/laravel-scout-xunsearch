@@ -9,8 +9,10 @@ use SplFixedArray;
 
 abstract class AbstractTokenizer implements TokenizerContract
 {
+    /** @var \XS */
     protected $xs;
 
+    /** @var mixed */
     protected $mode;
 
     public function __construct(TokenizerBuilder $builder)
