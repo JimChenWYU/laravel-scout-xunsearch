@@ -22,11 +22,11 @@ class TokenizerBuilder
      */
     public function __construct($class)
     {
-        if (is_subclass_of($class, TokenizerContract::class)) {
-            $this->class = $class;
+        if (!is_subclass_of($class, TokenizerContract::class)) {
+            throw new RuntimeException("Class '{$class}' not implement '" . TokenizerContract::class . "'");
         }
 
-        throw new RuntimeException("Class '{$class}' not implement '" . TokenizerContract::class . "'");
+        $this->class = $class;
     }
 
     /**
