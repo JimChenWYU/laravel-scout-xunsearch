@@ -4,8 +4,6 @@ namespace JimChen\LaravelScout\XunSearch;
 
 use donatj\Ini\Builder as IniBuilder;
 use Illuminate\Support\Str;
-use JimChen\LaravelScout\XunSearch\Builders\TokenizerBuilder;
-use JimChen\LaravelScout\XunSearch\Tokenizers\Results\Top;
 use XS;
 
 class XunSearchClient
@@ -32,11 +30,6 @@ class XunSearchClient
     protected $charset;
 
     /**
-     * @var TokenizerBuilder
-     */
-    protected $tokenizerBuilder;
-
-    /**
      * options.
      *
      * @var mixed
@@ -55,11 +48,10 @@ class XunSearchClient
      * @param string $charset
      * @param array  $options
      */
-    public function __construct($indexHost, $searchHost, TokenizerBuilder $tokenizerBuilder, $charset = 'uft-8', $options = [])
+    public function __construct($indexHost, $searchHost, $charset = 'uft-8', $options = [])
     {
         $this->indexHost = $indexHost;
         $this->searchHost = $searchHost;
-        $this->tokenizerBuilder = $tokenizerBuilder;
         $this->charset = $charset;
         $this->options = $options;
     }
@@ -97,30 +89,6 @@ class XunSearchClient
     }
 
     /**
-     * @param string $string
-     * @return string[]
-     */
-    public function participle(string $indexName, string $string)
-    {
-        if (empty($string)) {
-            return [];
-        }
-
-        $topWordsCollection = $this->tokenizerBuilder
-            ->withXs($this->initXunSearch($indexName))
-            ->build()
-            ->getTops($string, 5, 'n,nr,ns,nz,v,vn');
-
-        $topWords = [];
-        /** @var Top $item */
-        foreach ($topWordsCollection as $item) {
-            $topWords[] = $item->getWord();
-        }
-
-        return $topWords;
-    }
-
-    /**
      * Build search engine
      *
      * @param array $config
@@ -129,6 +97,14 @@ class XunSearchClient
     public function buildXunSearch(array $config)
     {
         return new XS((new IniBuilder())->generate($config));
+    }
+
+    /**
+     * @param mixed $query
+     */
+    public function buildQuery($query): string
+    {
+        //TODO:
     }
 
     /**

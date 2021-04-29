@@ -7,10 +7,6 @@ return [
 
         'search'  => null,
 
-        'tokenizer' => [
-            'class' => \JimChen\LaravelScout\XunSearch\Tokenizers\ScwsTokenizer::class,
-        ],
-
         'charset' => 'utf-8',
 
         'options' => [

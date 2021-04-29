@@ -192,11 +192,11 @@ class XunSearchEngine extends Engine
     /**
      * Perform the given search on the engine.
      *
-     * @param  \Laravel\Scout\Builder  $builder
+     * @param  \Laravel\Scout\Builder $builder
      *
      * @return array
      */
-    protected function performSearch(Builder $builder, array $options = [], bool $or = false)
+    protected function performSearch(Builder $builder, array $options = [])
     {
         $indexName = $builder->index ?: $this->getIndexName($builder->model);
 
@@ -206,9 +206,7 @@ class XunSearchEngine extends Engine
             return call_user_func($builder->callback, $search, $builder->query, $options);
         }
 
-        $words = $this->xunsearch->participle($indexName, $builder->query);
-
-        $search->setQuery($this->buildSearchQuery($words, $or));
+        $search->setQuery($this->xunsearch->buildQuery($builder->query));
 
         collect($builder->wheres)->each(function ($value, $key) use ($search) {
             if ($value instanceof RangeOperator) {
@@ -244,10 +242,6 @@ class XunSearchEngine extends Engine
         }
         $hits = $search->setLimit($perPage, $offset)->search();
 
-        if (count($hits) < 3 && $or == false) {
-            $this->performSearch($builder, $options, true);
-        }
-
         $facets = collect($builder->wheres)->map(function ($value, $key) use ($search) {
             if ($value instanceof FacetsOperator) {
                 return collect($value->getFields())->mapWithKeys(function ($field) use ($search) {
@@ -279,25 +273,6 @@ class XunSearchEngine extends Engine
         return collect($builder->wheres)->map(function ($value, $key) {
             return $key . '=' . $value;
         })->values()->all();
-    }
-
-    /**
-     * @param array $words
-     * @param bool  $or
-     * @return string
-     */
-    protected function buildSearchQuery(array $words, bool $or)
-    {
-        if (count($words) < 2 || $or) {
-            return implode(' OR ', $words);
-        }
-
-        $keyword_ = $words[0] . ' AND (';
-        unset($words[0]);
-        $keyword = implode(' OR ', $words);
-        $keyword_ .= $keyword . ')';
-
-        return $keyword_;
     }
 
     /**
