@@ -5,10 +5,9 @@ namespace Tests\Units;
 use JimChen\LaravelScout\XunSearch\Builders\TokenizerBuilder;
 use JimChen\LaravelScout\XunSearch\Tokenizers\Results\Top;
 use JimChen\LaravelScout\XunSearch\XunSearchClient;
-use SplFixedArray;
-use stdClass;
-use Tests\TestCase;
 use Mockery as m;
+use SplFixedArray;
+use Tests\TestCase;
 
 class XunSearchClientTest extends TestCase
 {
