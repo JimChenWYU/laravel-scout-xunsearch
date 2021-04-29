@@ -52,7 +52,7 @@ class XunSearchScoutServiceProvider extends ServiceProvider implements Deferrabl
     public function provides()
     {
         return [
-            XunSearchClient::class,
+            EngineManager::class,
         ];
     }
 }
