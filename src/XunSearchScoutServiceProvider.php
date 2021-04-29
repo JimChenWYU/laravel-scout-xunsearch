@@ -41,8 +41,7 @@ class XunSearchScoutServiceProvider extends ServiceProvider implements Deferrabl
     public function boot()
     {
         $this->app->make(EngineManager::class)->extend('xunsearch', function ($app) {
-            $config = $app['config']->get('scout.xunsearch');
-            return new XunSearchEngine($config, $app['config']->get('scout.soft_delete'));
+            return new XunSearchEngine($app->make(XunSearchClient::class), $app['config']->get('scout.soft_delete'));
         });
     }
 
