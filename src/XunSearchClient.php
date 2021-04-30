@@ -5,6 +5,7 @@ namespace JimChen\LaravelScout\XunSearch;
 use donatj\Ini\Builder as IniBuilder;
 use Illuminate\Support\Str;
 use JimChen\LaravelScout\XunSearch\Queries\Query;
+use Psr\SimpleCache\CacheInterface;
 use XS;
 
 class XunSearchClient
@@ -31,6 +32,11 @@ class XunSearchClient
     protected $charset;
 
     /**
+     * @var CacheInterface
+     */
+    protected $cache;
+
+    /**
      * options.
      *
      * @var mixed
@@ -40,21 +46,30 @@ class XunSearchClient
     /**
      * @var XS[]
      */
-    private $instances = [];
+    protected $instances = [];
 
     /**
      * XunSearchClient constructor.
-     * @param string $indexHost
-     * @param string $searchHost
-     * @param string $charset
-     * @param array  $options
+     * @param string         $indexHost
+     * @param string         $searchHost
+     * @param CacheInterface $cache
+     * @param string         $charset
+     * @param array          $options
      */
-    public function __construct($indexHost, $searchHost, $charset = 'uft-8', $options = [])
+    public function __construct(
+        $indexHost,
+        $searchHost,
+        CacheInterface $cache,
+        $charset = 'uft-8',
+        $options = []
+    )
     {
         $this->indexHost = $indexHost;
         $this->searchHost = $searchHost;
+        $this->cache = $cache;
         $this->charset = $charset;
         $this->options = $options;
+        $this->cache = $cache;
     }
 
     /**
@@ -86,18 +101,18 @@ class XunSearchClient
      */
     public function initXunSearch(string $indexName)
     {
-        return $this->instances[$indexName] ?? $this->instances[$indexName] = $this->buildXunSearch($this->loadConfig($indexName));
+        return $this->instances[$indexName] ?? $this->instances[$indexName] = $this->buildXunSearch($this->loadIni($indexName));
     }
 
     /**
      * Build search engine
      *
-     * @param array $config
+     * @param string $ini
      * @return XS
      */
-    public function buildXunSearch(array $config)
+    public function buildXunSearch(string $ini)
     {
-        return new XS((new IniBuilder())->generate($config));
+        return new XS($ini);
     }
 
     /**
@@ -138,6 +153,21 @@ class XunSearchClient
         $config['project.name'] = $schema;
 
         return $config;
+    }
+
+    /**
+     * @param string $indexName
+     * @return string
+     */
+    public function loadIni(string $indexName)
+    {
+        $ini = $this->cache->get($indexName);
+        if (!is_string($ini) || !$ini) {
+            $ini = (new IniBuilder())->generate($this->loadConfig($indexName));
+            $this->cache->set($indexName, $ini);
+        }
+
+        return $ini;
     }
 
     /**

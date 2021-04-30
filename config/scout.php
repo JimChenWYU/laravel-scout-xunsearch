@@ -9,11 +9,17 @@ return [
 
         'charset' => 'utf-8',
 
-        'options' => [
+        'storage'  => [
 
-            'schema_prefix' => env('SCOUT_PREFIX'),
+            'prefix'  => env('SCOUT_PREFIX'),
 
-            'schemas' => [
+            'cache'   => [
+                'enabled' => false,
+                'store'   => null,
+                'prefix'  => 'xunsearch',
+            ],
+
+            'schema' => [
                 /**
                  * @see http://www.xunsearch.com/doc/php/guide/ini.guide
                  *

@@ -17,17 +17,28 @@ class XunSearchScoutServiceProvider extends ServiceProvider implements Deferrabl
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/scout.php', 'scout');
-        $this->app->bind(XunSearchClient::class, function ($app) {
+
+        $this->app->bind(SchemaCache::class, function ($app) {
+            return new SchemaCache(
+                $app['config']->get('scout.xunsearch.storage.cache.enable', false),
+                $app['store']->get('scout.xunsearch.storage.cache.store'),
+                $app['prefix']->get('scout.xunsearch.storage.cache.prefix')
+            );
+        });
+
+        $this->app->singleton(XunSearchClient::class, function ($app) {
             return new XunSearchClient(
                 $app['config']->get('scout.xunsearch.index'),
                 $app['config']->get('scout.xunsearch.search'),
+                $app[SchemaCache::class],
                 $app['config']->get('scout.xunsearch.charset'),
-                array_merge($app['config']->get('scout.xunsearch.options'), [
+                [
                     'schema_prefix' => $app['config']->get(
-                        'scout.xunsearch.options.schema_prefix',
+                        'scout.xunsearch.storage.prefix',
                         $app['config']->get('scout.prefix')
-                    )
-                ])
+                    ),
+                    'schemas' => $app['config']->get('scout.xunsearch.storage.schema')
+                ]
             );
         });
     }
