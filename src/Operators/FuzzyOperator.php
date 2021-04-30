@@ -6,7 +6,7 @@ class FuzzyOperator extends Operator
 {
     private $fuzzy;
 
-    public function __construct($fuzzy)
+    public function __construct(bool $fuzzy)
     {
         $this->fuzzy = $fuzzy;
     }
@@ -16,8 +16,11 @@ class FuzzyOperator extends Operator
         return (string) $this->fuzzy;
     }
 
-    public function __invoke()
+    /**
+     * @return bool
+     */
+    public function isFuzzy()
     {
-        return (bool) $this->fuzzy;
+        return $this->fuzzy;
     }
 }

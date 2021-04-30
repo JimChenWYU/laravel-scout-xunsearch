@@ -208,21 +208,21 @@ class XunSearchEngine extends Engine
 
         $search->setQuery($this->xunsearch->buildQuery($builder->query));
 
-        collect($builder->wheres)->each(function ($value, $key) use ($search) {
+        foreach ($builder->wheres as $key => $value) {
             if ($value instanceof RangeOperator) {
                 $search->addRange($key, $value->getFrom(), $value->getTo());
             } elseif ($value instanceof WeightOperator) {
-                $search->addWeight($key, $value);
+                $search->addWeight($key, $value->getTerm(), (float)sprintf('%s', $value->getWeight()));
             } elseif ($value instanceof CollapseOperator) {
                 $search->setCollapse($key, (int) sprintf('%s', $value));
             } elseif ($value instanceof FuzzyOperator) {
-                $search->setFuzzy($value());
+                $search->setFuzzy($value->isFuzzy());
             } elseif ($value instanceof FacetsOperator) {
                 $search->setFacets($value->getFields(), $value->getExact());
             } else {
                 $search->addRange($key, $value, $value);
             }
-        });
+        }
 
         /*
         collect($builder->orders)->map(function ($value, $key) use ($search) {
