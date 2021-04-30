@@ -4,6 +4,7 @@ namespace JimChen\LaravelScout\XunSearch;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use JimChen\LaravelScout\XunSearch\Console\IniFlushCommand;
 use JimChen\LaravelScout\XunSearch\Engines\XunSearchEngine;
 use Laravel\Scout\EngineManager;
 
@@ -53,6 +54,10 @@ class XunSearchScoutServiceProvider extends ServiceProvider implements Deferrabl
         $this->app->make(EngineManager::class)->extend('xunsearch', function ($app) {
             return new XunSearchEngine($app->make(XunSearchClient::class), $app['config']->get('scout.soft_delete'));
         });
+
+        $this->commands([
+            IniFlushCommand::class,
+        ]);
     }
 
     /**
