@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace JimChen\LaravelScout\XunSearch\Console;
 
@@ -35,10 +35,10 @@ class IniFlushCommand extends Command
         }
 
         /** @var Model|Searchable $model */
-        $model = new $class;
+        $model = new $class();
 
         $cache->delete($model->searchableAs());
 
-        $this->info('All ['.$class.'] ini configuration cache have been flushed.');
+        $this->info('All [' . $class . '] ini configuration cache have been flushed.');
     }
 }

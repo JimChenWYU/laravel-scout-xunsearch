@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Units;
 
@@ -26,8 +26,8 @@ class IniFlushCommandTest extends TestCase
 
         $cache->clear();
 
-        $model1 = new User;
-        $model2 = new Post;
+        $model1 = new User();
+        $model2 = new Post();
 
         $cache->set($model1->searchableAs(), 'first');
         $cache->set($model2->searchableAs(), 'second');
@@ -68,4 +68,3 @@ class Post extends Model
         return 'post';
     }
 }
-
