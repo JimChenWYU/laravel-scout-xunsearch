@@ -63,7 +63,7 @@ class XunSearchEngineTest extends TestCase
         $client->shouldReceive('initSearch')->with('table')->andReturn($search = m::mock(stdClass::class));
         $client->shouldReceive('participle')->with('table', 'zonda')->andReturn(['zonda']);
         $client->shouldReceive('buildQuery')->with('zonda')->andReturn('zonda');
-        $search->shouldReceive('search')->withNoArgs()->andReturn([1,2,3]);
+        $search->shouldReceive('search')->with(null, false)->andReturn([1,2,3]);
         $search->shouldReceive('getLastCount')->withNoArgs()->andReturn(3);
         $search->shouldReceive('setQuery')->with('zonda')->andReturnSelf();
         $search->shouldReceive('setLimit')->withAnyArgs()->andReturnSelf();

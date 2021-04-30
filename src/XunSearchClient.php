@@ -170,6 +170,30 @@ class XunSearchClient
     }
 
     /**
+     * @param string $indexName
+     * @param int    $limit
+     * @param string $type
+     * @return \XSDocument[]
+     * @throws \XSException
+     */
+    public function getHotQuery(string $indexName, int $limit = 10, string $type = 'total')
+    {
+        return $this->initSearch($indexName)->getHotQuery($limit, $type);
+    }
+
+    /**
+     * @param string      $indexName
+     * @param string|null $query
+     * @param int         $limit
+     * @return \XSDocument[]
+     * @throws \XSException
+     */
+    public function getRelatedQuery(string $indexName, ?string $query = null, int $limit = 10)
+    {
+        return $this->initSearch($indexName)->getRelatedQuery($query, $limit);
+    }
+
+    /**
      * @param string $name
      * @return string
      */
