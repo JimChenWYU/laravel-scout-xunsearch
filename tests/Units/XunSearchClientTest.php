@@ -27,7 +27,8 @@ class XunSearchClientTest extends TestCase
             'localhost:8383',
             'localhost:8384',
             $cache,
-            'gbk', [
+            'gbk',
+            [
                 'schemas' => [
                     'user' => [
                         'id' => [
@@ -113,7 +114,8 @@ INI;
             'localhost:8383',
             'localhost:8384',
             $cache,
-            'gbk', [
+            'gbk',
+            [
                 'schemas' => [
                     'demo' => [
                         'id' => [
@@ -141,7 +143,8 @@ INI;
             'localhost:8383',
             'localhost:8384',
             $cache,
-            'gbk', [
+            'gbk',
+            [
                 'schemas' => [
                     'demo' => [
                         'id' => [
@@ -156,7 +159,7 @@ INI;
             ]
         );
 
-        self::assertEquals((new IniBuilder)->generate($client->loadConfig('demo')), $client->loadIni('demo'));
+        self::assertEquals((new IniBuilder())->generate($client->loadConfig('demo')), $client->loadIni('demo'));
     }
 }
 
