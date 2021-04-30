@@ -16,7 +16,7 @@ class XunSearchClientTest extends TestCase
             'localhost:8383',
             'localhost:8384',
             'gbk',
-            [
+            'gbk', [
                 'schemas' => [
                     'user' => [
                         'id' => [
@@ -44,7 +44,7 @@ class XunSearchClientTest extends TestCase
             'localhost:8383',
             'localhost:8384',
             'gbk',
-            [
+            'gbk', [
                 'schemas' => [
                     'user' => [
                         'id' => [
@@ -74,7 +74,7 @@ class XunSearchClientTest extends TestCase
             'localhost:8383',
             'localhost:8384',
             'gbk',
-            [
+            'gbk', [
                 'schemas' => [
                     'user' => [
                         'id' => [
@@ -104,7 +104,7 @@ class XunSearchClientTest extends TestCase
             'localhost:8383',
             'localhost:8384',
             'gbk',
-            [
+            'gbk', [
                 'schemas' => [
                     'user' => [
                         'id' => [
@@ -129,7 +129,7 @@ class XunSearchClientTest extends TestCase
             'localhost:8383',
             'localhost:8384',
             'gbk',
-            [
+            'gbk', [
                 'schemas' => [
                     'user' => [
                         'id' => [
