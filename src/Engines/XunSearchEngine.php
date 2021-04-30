@@ -240,7 +240,7 @@ class XunSearchEngine extends Engine
         if (!empty($options['page'])) {
             $offset = $perPage * $options['page'];
         }
-        $hits = $search->setLimit($perPage, $offset)->search();
+        $hits = $search->setLimit($perPage, $offset)->search(null, false);
 
         $facets = collect($builder->wheres)->map(function ($value, $key) use ($search) {
             if ($value instanceof FacetsOperator) {
