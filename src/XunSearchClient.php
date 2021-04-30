@@ -60,14 +60,14 @@ class XunSearchClient
         $indexHost,
         $searchHost,
         CacheInterface $cache,
-        $charset = 'uft-8',
-        $options = []
+        $charset = null,
+        $options = null
     ) {
         $this->indexHost = $indexHost;
         $this->searchHost = $searchHost;
         $this->cache = $cache;
-        $this->charset = $charset;
-        $this->options = $options;
+        $this->charset = $charset ?? 'UTF-8';
+        $this->options = $options ?? [];
         $this->cache = $cache;
     }
 
