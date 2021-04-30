@@ -35,6 +35,11 @@ class XunSearchClientTest extends TestCase
                             'type' => 'id',
                         ],
                     ],
+                    'post' => [
+                        'id' => [
+                            'type' => 'id',
+                        ],
+                    ],
                 ],
             ]
         );
