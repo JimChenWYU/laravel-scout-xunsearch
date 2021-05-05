@@ -3,6 +3,7 @@
 namespace Tests\Units;
 
 use Illuminate\Cache\ArrayStore;
+use Illuminate\Cache\NullStore;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\Cache;
 use JimChen\LaravelScout\XunSearch\SchemaCache;
@@ -14,11 +15,11 @@ class SchemaCachetTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         Cache::shouldReceive('store')
             ->with('array')
             ->andReturn(new Repository(new ArrayStore()));
-
-        parent::setUp();
     }
 
     public function test_clear()
@@ -60,6 +61,10 @@ class SchemaCachetTest extends TestCase
 
     public function test_disable_cache()
     {
+        Cache::shouldReceive('repository')
+            ->withAnyArgs()
+            ->andReturn(new Repository(new NullStore()));
+
         $cache = new SchemaCache(false, 'array', 'test');
 
         // get
