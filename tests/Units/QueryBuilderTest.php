@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Units;
 
@@ -19,110 +19,136 @@ class QueryBuilderTest extends TestCase
         self::assertEquals('foo OR bar', $builder->logic('foo')->orLogic('bar')->build());
 
         $builder = new QueryBuilder();
-        self::assertEquals('foo AND bar OR zoo AND foobar',
+        self::assertEquals(
+            'foo AND bar OR zoo AND foobar',
             $builder
                 ->logic('foo')
                 ->andLogic('bar')
                 ->orLogic('zoo')
                 ->andLogic('foobar')
-                ->build());
+                ->build()
+        );
     }
 
     public function testNotQuery()
     {
         $builder = new QueryBuilder();
-        self::assertEquals('NOT foo',
+        self::assertEquals(
+            'NOT foo',
             $builder
                 ->notLogic('foo')
-                ->build());
+                ->build()
+        );
 
         $builder = new QueryBuilder();
-        self::assertEquals('foo NOT abc',
+        self::assertEquals(
+            'foo NOT abc',
             $builder
                 ->logic('foo')
                 ->notLogic('abc')
-                ->build());
+                ->build()
+        );
 
         $builder = new QueryBuilder();
-        self::assertEquals('foo AND bar OR zoo NOT abc',
+        self::assertEquals(
+            'foo AND bar OR zoo NOT abc',
             $builder
                 ->logic('foo')
                 ->andLogic('bar')
                 ->orLogic('zoo')
                 ->notLogic('abc')
-                ->build());
+                ->build()
+        );
 
         $builder = new QueryBuilder();
-        self::assertEquals('foo AND bar OR zoo NOT (abc cbd)',
+        self::assertEquals(
+            'foo AND bar OR zoo NOT (abc cbd)',
             $builder
                 ->logic('foo')
                 ->andLogic('bar')
                 ->orLogic('zoo')
                 ->notLogic('abc')
                 ->notLogic('cbd')
-                ->build());
+                ->build()
+        );
     }
 
     public function testRepeat()
     {
         $builder = new QueryBuilder();
-        self::assertEquals('foo AND foo OR foo',
+        self::assertEquals(
+            'foo AND foo OR foo',
             $builder
                 ->logic('foo')
                 ->andLogic('foo')
                 ->orLogic('foo')
-                ->build());
+                ->build()
+        );
 
         $builder = new QueryBuilder();
-        self::assertEquals('foo NOT (foo foo)',
+        self::assertEquals(
+            'foo NOT (foo foo)',
             $builder
                 ->logic('foo')
                 ->notLogic('foo')
                 ->notLogic('foo')
-                ->build());
+                ->build()
+        );
 
         $builder = new QueryBuilder();
-        self::assertEquals('foo AND foo OR foo NOT (foo foo)',
+        self::assertEquals(
+            'foo AND foo OR foo NOT (foo foo)',
             $builder
                 ->logic('foo')
                 ->andLogic('foo')
                 ->orLogic('foo')
                 ->notLogic('foo')
                 ->notLogic('foo')
-                ->build());
+                ->build()
+        );
     }
 
     public function testArrayQuery()
     {
         $builder = new QueryBuilder();
-        self::assertEquals('(foo AND bar)',
-            $builder->logic(['foo', 'bar'])->build());
+        self::assertEquals(
+            '(foo AND bar)',
+            $builder->logic(['foo', 'bar'])->build()
+        );
 
         $builder = new QueryBuilder();
-        self::assertEquals('(bar OR zoo)',
+        self::assertEquals(
+            '(bar OR zoo)',
             $builder
                 ->logic([['bar', 'and'], ['zoo', 'or']])
-                ->build());
+                ->build()
+        );
 
         $builder = new QueryBuilder();
-        self::assertEquals('NOT (foo bar)',
+        self::assertEquals(
+            'NOT (foo bar)',
             $builder
                 ->notLogic(['foo', 'bar'])
-                ->build());
+                ->build()
+        );
 
         $builder = new QueryBuilder();
-        self::assertEquals('NOT (foo bar)',
+        self::assertEquals(
+            'NOT (foo bar)',
             $builder
                 ->notLogic([['foo', 'and'], ['bar', 'and']])
-                ->build());
+                ->build()
+        );
 
         $builder = new QueryBuilder();
-        self::assertEquals('((foo OR bar) OR zoo) AND bar OR zoo NOT abc',
+        self::assertEquals(
+            '((foo OR bar) OR zoo) AND bar OR zoo NOT abc',
             $builder
                 ->logic([[[['foo', 'and'], ['bar', 'or']], 'and'], ['zoo', 'or']])
                 ->andLogic('bar')
                 ->orLogic('zoo')
                 ->notLogic('abc')
-                ->build());
+                ->build()
+        );
     }
 }

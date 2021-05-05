@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace JimChen\LaravelScout\XunSearch;
 
@@ -121,7 +121,7 @@ class QueryBuilder implements Stringable
 
     protected function termNested(Closure $callback, $boolean = 'AND')
     {
-        call_user_func($callback, $query = new static);
+        call_user_func($callback, $query = new static());
 
         return $this->addNestedTerm($query, $boolean);
     }
@@ -133,7 +133,7 @@ class QueryBuilder implements Stringable
 
     protected function buildTermNested(QueryBuilder $query, $term)
     {
-        return '('. $this->compileTerms($term['query']) .')';
+        return '(' . $this->compileTerms($term['query']) . ')';
     }
 
     protected function compileTerms(QueryBuilder $query)
@@ -157,7 +157,7 @@ class QueryBuilder implements Stringable
 
         $collect = collect($query->notTerms)->pluck('value');
         if ($collect->isNotEmpty()) {
-            return 'NOT ' . ($collect->count() > 1 ? '('.$collect->join(' ').')' : $collect->first());
+            return 'NOT ' . ($collect->count() > 1 ? '(' . $collect->join(' ') . ')' : $collect->first());
         }
 
         return '';
@@ -167,7 +167,7 @@ class QueryBuilder implements Stringable
     {
         return collect($query->terms)
             ->map(function ($term) use ($query) {
-                return strtoupper($term['boolean']).' '.$this->{"buildTerm{$term['type']}"}($query, $term);
+                return strtoupper($term['boolean']) . ' ' . $this->{"buildTerm{$term['type']}"}($query, $term);
             })
             ->all();
     }
