@@ -1,7 +1,10 @@
 <h1 align="center"> laravel-scout-xunsearch </h1>
 
-<p align="center"> Xunsearch Driver for Laravel Scout..</p>
+---
+[![Run tests](https://github.com/JimChenWYU/laravel-scout-xunsearch/actions/workflows/run-tests.yml/badge.svg)](https://github.com/JimChenWYU/laravel-scout-xunsearch/actions/workflows/run-tests.yml)
+[![Check & fix styling](https://github.com/JimChenWYU/laravel-scout-xunsearch/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/JimChenWYU/laravel-scout-xunsearch/actions/workflows/php-cs-fixer.yml)
 
+Xunsearch Driver for Laravel Scout..
 
 ## Installing
 
