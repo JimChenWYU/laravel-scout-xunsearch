@@ -1,5 +1,5 @@
 <?php
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config)
     ->setRules([
         '@PSR2' => true,
         'declare_strict_types' => true,
@@ -24,4 +24,4 @@ return PhpCsFixer\Config::create()
             ->exclude('vendor')
             ->in([__DIR__.'/src/', __DIR__.'/tests/'])
     )
-;
+    ;
