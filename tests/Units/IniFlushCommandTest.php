@@ -13,7 +13,7 @@ class IniFlushCommandTest extends TestCase
     {
         parent::setUp();
 
-        $this->app['config']->set('scout.xunsearch.storage.cache.enable', true);
+        $this->app['config']->set('scout.xunsearch.storage.cache.enabled', true);
         $this->app['config']->set('scout.xunsearch.storage.cache.store', 'array');
         $this->app['config']->set('scout.xunsearch.storage.cache.prefix', 'test');
     }
