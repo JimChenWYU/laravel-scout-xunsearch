@@ -21,7 +21,7 @@ class XunSearchScoutServiceProvider extends ServiceProvider implements Deferrabl
 
         $this->app->bind(SchemaCache::class, function ($app) {
             return new SchemaCache(
-                $app['config']->get('scout.xunsearch.storage.cache.enable', false),
+                $app['config']->get('scout.xunsearch.storage.cache.enabled', false),
                 $app['config']->get('scout.xunsearch.storage.cache.store'),
                 $app['config']->get('scout.xunsearch.storage.cache.prefix')
             );
