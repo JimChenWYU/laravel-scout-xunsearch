@@ -8,8 +8,8 @@ use JimChen\LaravelScout\XunSearch\XunSearchClient;
 /**
  * Class XunSearch
  *
- * @method static \XSDocument[] getHotQuery(string $indexName, int $limit = 10, string $type = 'total')
- * @method static \XSDocument[] getRelatedQuery(string $indexName, ?string $query = null, int $limit = 10)
+ * @method static array getHotQuery(string $indexName, int $limit = 10, string $type = 'total')
+ * @method static array getRelatedQuery(string $indexName, ?string $query = null, int $limit = 10)
  */
 class XunSearch extends Facade
 {

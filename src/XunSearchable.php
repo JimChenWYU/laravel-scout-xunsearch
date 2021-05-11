@@ -14,7 +14,7 @@ trait XunSearchable
     /**
      * @param int    $limit
      * @param string $type
-     * @return \XSDocument[]
+     * @return array
      */
     public function getHotQuery(int $limit = 10, string $type = 'total')
     {
@@ -24,7 +24,7 @@ trait XunSearchable
     /**
      * @param string|null $query
      * @param int         $limit
-     * @return \XSDocument[]
+     * @return array
      */
     public function getRelatedQuery(?string $query = null, int $limit = 10)
     {

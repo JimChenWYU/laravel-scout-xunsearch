@@ -173,7 +173,7 @@ class XunSearchClient
      * @param string $indexName
      * @param int    $limit
      * @param string $type
-     * @return \XSDocument[]
+     * @return array
      * @throws \XSException
      */
     public function getHotQuery(string $indexName, int $limit = 10, string $type = 'total')
@@ -185,7 +185,7 @@ class XunSearchClient
      * @param string      $indexName
      * @param string|null $query
      * @param int         $limit
-     * @return \XSDocument[]
+     * @return array
      * @throws \XSException
      */
     public function getRelatedQuery(string $indexName, ?string $query = null, int $limit = 10)
