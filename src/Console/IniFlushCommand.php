@@ -15,8 +15,7 @@ class IniFlushCommand extends Command
     /**
      * @var string
      */
-    protected $signature = 'scout:xs-ini-flush
-            {model : Class name of model}';
+    protected $signature = 'scout:xs-ini-flush';
 
     /**
      * @var string
@@ -25,20 +24,8 @@ class IniFlushCommand extends Command
 
     public function handle(SchemaCache $cache)
     {
-        $class = $this->argument('model');
+        $cache->delete('xunsearch.cache.ini');
 
-        if ($class === 'all' && $this->confirmToProceed()) {
-            $cache->clear();
-
-            $this->info('All ini configuration cache have been flushed.');
-            return ;
-        }
-
-        /** @var Model|Searchable $model */
-        $model = new $class();
-
-        $cache->delete($model->searchableAs());
-
-        $this->info('All [' . $class . '] ini configuration cache have been flushed.');
+        $this->info('All ini configuration cache have been flushed.');
     }
 }

@@ -112,7 +112,7 @@ type = id
 [nickname]
 index = mixed
 INI;
-        $cache->shouldReceive('get')->with('demo')->andReturn($ini);
+        $cache->shouldReceive('get')->with('xunsearch.cache.ini')->andReturn($ini);
         $cache->shouldNotReceive('set');
 
         $client = new TestXunSearchClient(
@@ -141,8 +141,8 @@ INI;
     public function test_build_xunsearch_missing_cache_ini()
     {
         $cache = m::mock(CacheInterface::class);
-        $cache->shouldReceive('get')->with('demo')->andReturn(false);
-        $cache->shouldReceive('set')->once()->with('demo', m::any())->andReturn(true);
+        $cache->shouldReceive('get')->with('xunsearch.cache.ini')->andReturn(false);
+        $cache->shouldReceive('set')->once()->with('xunsearch.cache.ini', m::any())->andReturn(true);
 
         $client = new TestXunSearchClient(
             'localhost:8383',

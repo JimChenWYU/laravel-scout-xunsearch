@@ -26,45 +26,14 @@ class IniFlushCommandTest extends TestCase
 
         $cache->clear();
 
-        $model1 = new User();
-        $model2 = new Post();
+        $cache->set('xunsearch.cache.ini', 'first');
+        $cache->set('foobar', 'second');
 
-        $cache->set($model1->searchableAs(), 'first');
-        $cache->set($model2->searchableAs(), 'second');
+        $this->artisan('scout:xs-ini-flush')->assertExitCode(0);
 
-        $this->artisan('scout:xs-ini-flush', [
-            'model' => User::class
-        ])->assertExitCode(0);
-
-        self::assertFalse($cache->has($model1->searchableAs()));
-        self::assertTrue($cache->has($model2->searchableAs()));
-
-        $this->artisan('scout:xs-ini-flush', [
-            'model' => 'all'
-        ])->assertExitCode(0);
-
-        self::assertFalse($cache->has($model2->searchableAs()));
+        self::assertFalse($cache->has('xunsearch.cache.ini'));
+        self::assertTrue($cache->has('foobar'));
 
         $cache->clear();
-    }
-}
-
-class User extends Model
-{
-    use Searchable;
-
-    public function searchableAs()
-    {
-        return 'user';
-    }
-}
-
-class Post extends Model
-{
-    use Searchable;
-
-    public function searchableAs()
-    {
-        return 'post';
     }
 }
