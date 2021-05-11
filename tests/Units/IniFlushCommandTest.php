@@ -26,14 +26,26 @@ class IniFlushCommandTest extends TestCase
 
         $cache->clear();
 
-        $cache->set('xunsearch.cache.ini', 'first');
-        $cache->set('foobar', 'second');
+        $cache->set('foo', 'first');
+        $cache->set('bar', 'second');
 
-        $this->artisan('scout:xs-ini-flush')->assertExitCode(0);
+        $this->artisan('scout:xs-ini-flush', [
+            'model' => Foo::class,
+        ])->assertExitCode(0);
 
-        self::assertFalse($cache->has('xunsearch.cache.ini'));
-        self::assertTrue($cache->has('foobar'));
+        self::assertFalse($cache->has('foo'));
+        self::assertTrue($cache->has('bar'));
 
         $cache->clear();
+    }
+}
+
+class Foo extends Model
+{
+    use Searchable;
+
+    public function searchableAs()
+    {
+        return 'foo';
     }
 }

@@ -160,10 +160,10 @@ class XunSearchClient
      */
     public function loadIni(string $indexName)
     {
-        $ini = $this->cache->get('xunsearch.cache.ini');
+        $ini = $this->cache->get($indexName);
         if (!is_string($ini) || !$ini) {
             $ini = (new IniBuilder())->generate($this->loadConfig($indexName));
-            $this->cache->set('xunsearch.cache.ini', $ini);
+            $this->cache->set($indexName, $ini);
         }
 
         return $ini;
