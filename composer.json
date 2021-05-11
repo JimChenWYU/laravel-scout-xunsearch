@@ -10,9 +10,9 @@
     ],
     "require": {
         "php": ">=7.2",
-        "laravel/scout": "^8.0",
-        "hightman/xunsearch": "^1.4",
         "donatj/php-ini-builder": "^0.1.4",
+        "hightman/xunsearch": "^1.4",
+        "laravel/scout": "^8.0",
         "symfony/polyfill-php80": "^1.22"
     },
     "autoload": {
@@ -21,7 +21,7 @@
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.18",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "mockery/mockery": "^1.0",
         "orchestra/testbench": "^4.0|^5.0|^6.0",
         "phpunit/phpunit": "^8.0"
