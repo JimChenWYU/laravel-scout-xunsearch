@@ -15,6 +15,6 @@ class XunSearch extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return static::$app[XunSearchClient::class];
+        return XunSearchClient::class;
     }
 }

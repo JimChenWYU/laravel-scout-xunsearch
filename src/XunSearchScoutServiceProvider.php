@@ -2,13 +2,12 @@
 
 namespace JimChen\LaravelScout\XunSearch;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use JimChen\LaravelScout\XunSearch\Console\IniFlushCommand;
 use JimChen\LaravelScout\XunSearch\Engines\XunSearchEngine;
 use Laravel\Scout\EngineManager;
 
-class XunSearchScoutServiceProvider extends ServiceProvider implements DeferrableProvider
+class XunSearchScoutServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
@@ -58,17 +57,5 @@ class XunSearchScoutServiceProvider extends ServiceProvider implements Deferrabl
         $this->commands([
             IniFlushCommand::class,
         ]);
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [
-            EngineManager::class,
-        ];
     }
 }
