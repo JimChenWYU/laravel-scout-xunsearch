@@ -8,7 +8,7 @@ use JimChen\LaravelScout\XunSearch\IniConfiguration;
 
 class ConfigClearCommand extends Command
 {
-    use HasConfiguration;
+    use Interacts;
 
     /**
      * The console command name.

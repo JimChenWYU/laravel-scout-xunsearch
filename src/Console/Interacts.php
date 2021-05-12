@@ -2,18 +2,14 @@
 
 namespace JimChen\LaravelScout\XunSearch\Console;
 
-use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
-
 /**
- * Trait HasConfiguration
+ * Trait Interacts
  *
  * @mixin \Illuminate\Console\Command
  */
-trait HasConfiguration
+trait Interacts
 {
     /**
-     * Boot a fresh copy of the application configuration.
-     *
      * @return array
      */
     protected function getFreshConfiguration()

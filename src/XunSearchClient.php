@@ -3,7 +3,6 @@
 namespace JimChen\LaravelScout\XunSearch;
 
 use donatj\Ini\Builder as IniBuilder;
-use Illuminate\Support\Str;
 use JimChen\LaravelScout\XunSearch\Queries\Query;
 use XS;
 
@@ -205,11 +204,6 @@ class XunSearchClient
      */
     protected function getSchemaName(string $name)
     {
-        $prefix = $this->options['schema_prefix'] ?? '';
-        if ($prefix) {
-            return Str::after($name, $prefix);
-        }
-
         return $name;
     }
 }

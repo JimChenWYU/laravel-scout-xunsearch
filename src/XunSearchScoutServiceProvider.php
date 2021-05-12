@@ -30,10 +30,6 @@ class XunSearchScoutServiceProvider extends ServiceProvider
                 $app[IniConfiguration::class],
                 $app['config']->get('scout.xunsearch.charset'),
                 [
-                    'schema_prefix' => $app['config']->get(
-                        'scout.xunsearch.storage.prefix',
-                        $app['config']->get('scout.prefix')
-                    ),
                     'schemas' => $app['config']->get('scout.xunsearch.storage.schema')
                 ]
             );

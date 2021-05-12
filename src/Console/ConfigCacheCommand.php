@@ -9,7 +9,7 @@ use JimChen\LaravelScout\XunSearch\XunSearchClient;
 
 class ConfigCacheCommand extends Command
 {
-    use HasConfiguration;
+    use Interacts;
 
     /**
      * The console command name.

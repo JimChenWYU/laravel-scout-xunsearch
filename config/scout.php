@@ -11,8 +11,6 @@ return [
 
         'storage'  => [
 
-            'prefix'  => env('SCOUT_PREFIX'),
-
             'cache'   => [
                 'path'    => app()->bootstrapPath('cache/xunsearch'),
             ],
@@ -21,7 +19,7 @@ return [
                 /**
                  * @see http://www.xunsearch.com/doc/php/guide/ini.guide
                  *
-                 * 'users' => [
+                 * env('SCOUT_PREFIX') . 'users' => [
                  *      'id' => [
                  *          'type' => 'id',
                  *      ],
