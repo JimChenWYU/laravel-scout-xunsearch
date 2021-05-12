@@ -5,7 +5,6 @@ namespace JimChen\LaravelScout\XunSearch;
 use donatj\Ini\Builder as IniBuilder;
 use Illuminate\Support\Str;
 use JimChen\LaravelScout\XunSearch\Queries\Query;
-use Psr\SimpleCache\CacheInterface;
 use XS;
 
 class XunSearchClient
@@ -32,9 +31,9 @@ class XunSearchClient
     protected $charset;
 
     /**
-     * @var CacheInterface
+     * @var IniConfiguration
      */
-    protected $cache;
+    protected $cacheConfig;
 
     /**
      * options.
@@ -52,23 +51,22 @@ class XunSearchClient
      * XunSearchClient constructor.
      * @param string         $indexHost
      * @param string         $searchHost
-     * @param CacheInterface $cache
+     * @param IniConfiguration $cacheConfig
      * @param string         $charset
      * @param array          $options
      */
     public function __construct(
         $indexHost,
         $searchHost,
-        CacheInterface $cache,
+        IniConfiguration $cacheConfig,
         $charset = null,
         $options = null
     ) {
         $this->indexHost = $indexHost;
         $this->searchHost = $searchHost;
-        $this->cache = $cache;
+        $this->cacheConfig = $cacheConfig;
         $this->charset = $charset ?? 'UTF-8';
         $this->options = $options ?? [];
-        $this->cache = $cache;
     }
 
     /**
@@ -160,13 +158,21 @@ class XunSearchClient
      */
     public function loadIni(string $indexName)
     {
-        $ini = $this->cache->get($indexName);
-        if (!is_string($ini) || !$ini) {
-            $ini = (new IniBuilder())->generate($this->loadConfig($indexName));
-            $this->cache->set($indexName, $ini);
+        $iniFilename = $indexName . '.ini';
+        if ($this->cacheConfig->configurationIsCached($iniFilename)) {
+            return $this->cacheConfig->getCachedConfigPath($iniFilename);
         }
 
-        return $ini;
+        return $this->generateIniConfig($indexName);
+    }
+
+    /**
+     * @param string $indexName
+     * @return string
+     */
+    public function generateIniConfig(string $indexName)
+    {
+        return (new IniBuilder())->generate($this->loadConfig($indexName));
     }
 
     /**

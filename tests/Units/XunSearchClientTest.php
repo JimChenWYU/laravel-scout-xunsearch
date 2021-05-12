@@ -2,13 +2,12 @@
 
 namespace Tests\Units;
 
-use donatj\Ini\Builder as IniBuilder;
+use JimChen\LaravelScout\XunSearch\IniConfiguration;
 use JimChen\LaravelScout\XunSearch\Queries\FieldQuery;
 use JimChen\LaravelScout\XunSearch\Queries\MixedQuery;
 use JimChen\LaravelScout\XunSearch\Queries\Query;
 use JimChen\LaravelScout\XunSearch\XunSearchClient;
 use Mockery as m;
-use Psr\SimpleCache\CacheInterface;
 use Tests\TestCase;
 
 class XunSearchClientTest extends TestCase
@@ -19,14 +18,14 @@ class XunSearchClientTest extends TestCase
     {
         parent::setUp();
 
-        $cache = m::mock(CacheInterface::class);
-        $cache->shouldReceive('get')->withAnyArgs()->andReturn(false);
-        $cache->shouldReceive('set')->withAnyArgs()->andReturn(false);
+        $cacheConfig = m::mock(IniConfiguration::class);
+        $cacheConfig->shouldReceive('configurationIsCached')->withAnyArgs()->andReturn(false);
+        $cacheConfig->shouldNotReceive('getCachedConfigPath');
 
         $this->client = new TestXunSearchClient(
             'localhost:8383',
             'localhost:8384',
-            $cache,
+            $cacheConfig,
             'gbk',
             [
                 'schemas' => [
@@ -102,23 +101,14 @@ class XunSearchClientTest extends TestCase
 
     public function test_build_xunsearch_from_cache_ini()
     {
-        $cache = m::mock(CacheInterface::class);
-        $ini = <<<INI
-project.name = demo
-
-[id]
-type = id
-
-[nickname]
-index = mixed
-INI;
-        $cache->shouldReceive('get')->with('demo')->andReturn($ini);
-        $cache->shouldNotReceive('set');
+        $cacheConfig = m::mock(IniConfiguration::class);
+        $cacheConfig->shouldReceive('configurationIsCached')->with('demo.ini')->andReturn(true);
+        $cacheConfig->shouldReceive('getCachedConfigPath')->with('demo.ini')->andReturn(test_ini_path('demo.ini'));
 
         $client = new TestXunSearchClient(
             'localhost:8383',
             'localhost:8384',
-            $cache,
+            $cacheConfig,
             'gbk',
             [
                 'schemas' => [
@@ -135,19 +125,19 @@ INI;
             ]
         );
 
-        self::assertEquals($ini, $client->loadIni('demo'));
+        self::assertEquals(test_ini_path('demo.ini'), $client->loadIni('demo'));
     }
 
     public function test_build_xunsearch_missing_cache_ini()
     {
-        $cache = m::mock(CacheInterface::class);
-        $cache->shouldReceive('get')->with('demo')->andReturn(false);
-        $cache->shouldReceive('set')->once()->with('demo', m::any())->andReturn(true);
+        $cacheConfig = m::mock(IniConfiguration::class);
+        $cacheConfig->shouldReceive('configurationIsCached')->with('demo.ini')->andReturn(false);
+        $cacheConfig->shouldNotReceive('getCachedConfigPath');
 
         $client = new TestXunSearchClient(
             'localhost:8383',
             'localhost:8384',
-            $cache,
+            $cacheConfig,
             'gbk',
             [
                 'schemas' => [
@@ -164,7 +154,7 @@ INI;
             ]
         );
 
-        self::assertEquals((new IniBuilder())->generate($client->loadConfig('demo')), $client->loadIni('demo'));
+        self::assertEquals($client->generateIniConfig('demo'), $client->loadIni('demo'));
     }
 }
 

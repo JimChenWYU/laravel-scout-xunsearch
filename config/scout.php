@@ -14,9 +14,7 @@ return [
             'prefix'  => env('SCOUT_PREFIX'),
 
             'cache'   => [
-                'enabled' => false,
-                'store'   => null,
-                'prefix'  => 'xunsearch',
+                'path'    => app()->bootstrapPath('cache/xunsearch'),
             ],
 
             'schema' => [
