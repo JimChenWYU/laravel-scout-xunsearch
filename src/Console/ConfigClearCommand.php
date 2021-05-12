@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace JimChen\LaravelScout\XunSearch\Console;
 
@@ -50,7 +50,7 @@ class ConfigClearCommand extends Command
 
         foreach ($schemaConfig as $schema => $config) {
             $this->files->delete(
-                $iniConfiguration->getCachedConfigPath($schema.'.ini')
+                $iniConfiguration->getCachedConfigPath($schema . '.ini')
             );
         }
 
