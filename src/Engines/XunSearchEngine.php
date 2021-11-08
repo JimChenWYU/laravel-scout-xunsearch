@@ -206,7 +206,12 @@ class XunSearchEngine extends Engine
             return call_user_func($builder->callback, $search, $builder->query, $options);
         }
 
-        $search->setQuery($this->xunsearch->buildQuery($builder->query));
+        /**
+         * @see https://github.com/JimChenWYU/laravel-scout-xunsearch/issues/1
+         * @see http://xunsearch.com/doc/php/guide/search.query
+         */
+        // $search->setQuery($this->xunsearch->buildQuery($builder->query));
+        $searchQuery = $this->xunsearch->buildQuery($builder->query);
 
         foreach ($builder->wheres as $key => $value) {
             if ($value instanceof RangeOperator) {
@@ -240,7 +245,7 @@ class XunSearchEngine extends Engine
         if (!empty($options['page'])) {
             $offset = $perPage * $options['page'];
         }
-        $hits = $search->setLimit($perPage, $offset)->search(null, false);
+        $hits = $search->setLimit($perPage, $offset)->search($searchQuery, false);
 
         $facets = collect($builder->wheres)->map(function ($value, $key) use ($search) {
             if ($value instanceof FacetsOperator) {
